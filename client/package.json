@@ -9,7 +9,6 @@
     "@okta/okta-react": "^1.0.2",
     "@okta/okta-signin-widget": "^2.9.0",
     "axios": "^0.19.0",
-    "babel-jest": "^24.8.0",
     "bootstrap": "^4.3.1",
     "dotenv": "^8.0.0",
     "in-browser-download": "^2.0.0",
@@ -20,16 +19,15 @@
     "react-dom": "^16.8.6",
     "react-grid-system": "^4.4.10",
     "react-icons": "^3.7.0",
-    "react-images-upload": "^1.2.7",
     "react-modal": "^3.9.1",
     "react-pdf": "^4.1.0",
     "react-router-dom": "^5.0.1",
-    "react-scripts": "3.0.1",
     "react-test-renderer": "^16.8.6",
     "reactstrap": "^8.0.1",
     "react-firebaseui": "^3.1.2",
     "save": "^2.4.0",
-    "stream-buffers": "^3.0.2"
+    "stream-buffers": "^3.0.2",
+    "react-scripts": "3.0.1"
   },
   "scripts": {
     "start": "react-scripts start",
