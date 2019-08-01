@@ -29,7 +29,8 @@
     "passport-local": "^1.0.0",
     "react": "^16.8.6",
     "react-icons": "^3.7.0",
-    "spectre.css": "^0.5.8"
+    "spectre.css": "^0.5.8",
+    "react-scripts": "3.0.1"
   },
   "devDependencies": {
     "concurrently": "^4.1.1",
