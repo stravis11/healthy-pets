@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Modal from 'react-modal';
 import API from "../../../utils/API";
 import axios from 'axios';
+import { FaPlusSquare } from "react-icons/fa";
 
 
 const customStyles = {
@@ -46,59 +47,27 @@ class PetModal extends Component {
         petRabiesTag: 0,
         petMicroChip: 0,
         uid: '',
-      currentPetId: 0,
+        currentPetId: 0,
+        userId: 0,
     };
   }
 
   componentDidMount = () => {
-    // console.log(this.props);
-    // this.setState({
-    //   petName: this.props.petName,
-    //   petBirthday: this.props.petBirthday,
-    //   petSpecies: this.props.petSpecies,
-    //   petColor: this.props.petColor,
-    //   petBreed: this.props.petBreed,
-    //   petSex: this.props.petSex,
-    //   petWeight: this.props.petWeight,
-    //   petRabiesTag: this.props.petRabiesTag,
-    //   petMicroChip: this.props.petMicroChip,
-    //   currentPetId: this.props.currentPetId
-    // });
-
-
-
-
-    // // console.log(this.props)
-    // // const url = window.location.pathname;
-    // // const pathnameArr = url.split("/");
-    // // const userId = pathnameArr[pathnameArr.length - 1];
-    // // this.setState({currentPetId: this.props.petId})
-    // // console.log(this.props.petId);
-
-
-
-    // axios.get(`/api/pets/${this.state.currentPetId}`)
-    // .then(res => {
-    //   console.log(res.data);
-    //   let pet = []
-    //   for(let i = 0; i < res.data.length; i++){
-    //     pet.push(res.data[i])
-    //     this.setState({pet: pet})
-    //   }
-    // })
-    // .catch(err => console.log(err));
+    const url = window.location.pathname;
+    const pathnameArr = url.split("/");
+    const userId = pathnameArr[pathnameArr.length - 1];
+    this.setState({userId: userId});
   };
 
 
   handleSubmit(event) {
     event.preventDefault();
-    this.updateDb(this.props.currentPetId);
+    this.updateDb(this.state.userId);
     this.closeModal();
-    this.props.modalOpen(false);
+    // this.props.modalOpen(false);
   }
 
-  updateDb = (currentPetId) => {
-    console.log(currentPetId)
+  updateDb = (uid) => {
     let petObj = {
       petName: this.state.petName,
       petBirthday: this.state.petBirthday,
@@ -109,31 +78,19 @@ class PetModal extends Component {
       petWeight: this.state.petWeight,
       petRabiesTag: this.state.petRabiesTag,
       petMicroChip: this.state.petMicroChip,
-      currentPetId: currentPetId
+      uid: uid
     }
 
-    axios.put(`/api/pets/update/${currentPetId}`, petObj)
+    axios.post(`/api/pets`, petObj)
     .then(res => {
       console.log(res);
+      this.props.getPetInfo(uid)
       console.log("pet updated")
     })
     .catch(err => console.log(err));
   }
 
   openModal() {
-    this.setState({
-      petName: this.props.petName,
-      petBirthday: this.props.petBirthday,
-      petSpecies: this.props.petSpecies,
-      petColor: this.props.petColor,
-      petBreed: this.props.petBreed,
-      petSex: this.props.petSex,
-      petWeight: this.props.petWeight,
-      petRabiesTag: this.props.petRabiesTag,
-      petMicroChip: this.props.petMicroChip,
-      currentPetId: this.props.currentPetId
-    });
-    this.props.modalOpen(true);
     this.setState({ modalIsOpen: true });
   }
 
@@ -143,7 +100,6 @@ class PetModal extends Component {
   }
 
   closeModal() {
-    this.props.modalUpdate(this.state.currentPetId);
     this.setState({ modalIsOpen: false });
   }
 
@@ -156,9 +112,10 @@ class PetModal extends Component {
   render() {
     return (
       <div>
-        <button className="edit" onClick={this.openModal}>
+        {/* <button className="edit" onClick={this.openModal}>
           Edit
-        </button>
+        </button> */}
+        <FaPlusSquare onClick={this.openModal}/>
         <Modal
           isOpen={this.state.modalIsOpen}
           onAfterOpen={this.afterOpenModal}

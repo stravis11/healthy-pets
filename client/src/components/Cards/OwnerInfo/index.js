@@ -1,30 +1,24 @@
 import React, {Component} from "react";
-import OwnerModal from "../Modals/OwnerModal";
+import OwnerModal from "../../Modals/OwnerModal";
 import Axios from "axios";
+import "./style.css";
 
 class OwnerInfo extends Component {
-  // constructor(props){
-  //   super(props);
-  //   this.state= {
-  //     info: []
-  //   }
-  // }
-  
-  componentWillMount = (uid) => {
-    Axios.get(`/api/pets/${uid}`)
-    .then(res => {
-      // this.setState({ props.ownerData })
-      console.log(res)
-    });
-    // console.log(props);
-  }
+  // componentWillMount = () => {
+  //   // Axios.get(`/api/owner/${this.props.uid}`).then(res => {
+  //   // });
+  // };
+
+  updatedModal = () => {
+    this.props.getUserInfo(this.props.uid);
+  };
 
   render () {
     return (
       <div className="card">
-        <div className="card-body">
-          <h3 className="card-title">Owner Profile</h3>
-          <OwnerModal/>
+        <div className="card-body text-center">
+          <h3 className="card-title"><strong>Owner Profile</strong></h3>
+          <OwnerModal modalUpdate={this.updatedModal}/>
         </div>
         <ul className="list-group list-group-flush">
           <li className="list-group-item"><strong>Name:</strong> {this.props.owner}</li>
