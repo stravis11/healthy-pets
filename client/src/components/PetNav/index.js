@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Dropdown, Button } from "react-bootstrap";
 import { FaPlusSquare } from "react-icons/fa";
 import DownloadPDF from "../DownloadPDF";
+import NewPetModal from "../Modals/NewPetModal"
 import Modal from 'react-modal';
 import "./style.css";
 import axios from 'axios';
@@ -22,9 +23,13 @@ class PetNav extends Component {
     const url = window.location.pathname;
     const pathnameArr = url.split("/");
     const userId = pathnameArr[pathnameArr.length - 1];
-    this.setState({userId: userId});
+    this.setState({userId: userId}, () => this.getPetInfo(userId));
+  };
+
+  getPetInfo = (userId) => {
     axios.get(`/api/pets/${userId}`)
     .then(res => {
+      console.log(res.data)
       let pet = []
       let petName = []
       for(let i = 0; i < res.data.length; i++){
@@ -35,7 +40,7 @@ class PetNav extends Component {
       }
     })
     .catch(err => console.log(err));
-  };
+  }
 
   handlePetChange = (pet) => {
     for(let i = 0; i < this.state.pets.length; i ++){
@@ -43,8 +48,6 @@ class PetNav extends Component {
         this.setState({currentPetId: this.state.pets[i]._id}, () => this.props.handlePetChange(this.state.currentPetId))
       }
     }
-
-    // this.props.handlePetChange(pet)
   }
 
   //send the pet details as props from the profile page.
@@ -92,7 +95,7 @@ class PetNav extends Component {
           </Dropdown>
 
           <Button variant="secondary">
-            Add A Pet <FaPlusSquare />
+            Add A Pet <NewPetModal getPetInfo={this.getPetInfo}/>
           </Button>
 
           <DownloadPDF />
