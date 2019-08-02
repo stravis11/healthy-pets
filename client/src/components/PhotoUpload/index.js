@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import ReactFilestack from "filestack-react";
 import "./style.css";
-import Image from "react-bootstrap/Image";
+// import Image from "react-bootstrap/Image";
 import axios from 'axios';
 
 
@@ -18,16 +18,14 @@ class PhotoUpload extends Component {
   }
 
   componentDidMount = () =>{
-    this.setState({userId: this.props.uid, currentPetId: this.props.petId})
+    console.log(this.props.petId)
+    this.setState({userId: this.props.uid, currentPetId: this.props.petId })
     this.findPetPic();
-    console.log(this.props)
   }
 
   findPetPic = () => {
-    console.log(this.props.petId)
     axios.get(`/api/pets/pic/${this.props.petId}`)
       .then(res => {
-        console.log(res)
         this.setState({ 
           petUrl: res.data[0].petUrl, 
       })
@@ -37,23 +35,18 @@ class PhotoUpload extends Component {
 
   updateDb = (petId) => {
     axios.put(`/api/pets/update/${petId}`, {petUrl: this.state.petUrl, currentPetId: petId})
-      .then(res => {
-        console.log(res)
-      })
+      .then(res => { console.log("database updated")})
       .catch(err => console.log(err));
   }
 
-
-
   render() {
     return (
-      <div className="card" id="pet-pic">
+      <div id="pet-pic">
         <div className="card-body text-center">
           <h3 className="card-title">
             <strong>Pet Picture</strong>
           </h3>
-        </div>
-        <ReactFilestack
+          <ReactFilestack
           apikey={apiKey}
           componentDisplayMode={{
             type: "button",
@@ -71,10 +64,12 @@ class PhotoUpload extends Component {
           }}
           onError={err => console.log(err)}
         />
-        <Image
+        </div>
+        
+        {/* <Image
           src={this.state.petUrl}
           style={{ width: "200px", height: "200px", padding: "10px" }}
-        />
+        /> */}
       </div>
     );
   }

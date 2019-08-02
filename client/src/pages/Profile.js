@@ -8,6 +8,7 @@ import { Container, Row, Col } from "react-grid-system";
 import CalendarComponent from "../components/Calendar";
 import PhotoUpload from "../components/PhotoUpload";
 import axios from 'axios';
+import { writeFile } from "fs";
 
 
 const cp = require("child_process");
@@ -47,7 +48,9 @@ class Profile extends Component {
     const url = window.location.pathname;
     const pathnameArr = url.split("/");
     const userId = pathnameArr[pathnameArr.length - 1];
-    this.setState({ currentUserId: userId });
+    this.setState({ 
+      currentUserId: userId,
+     });
 
     axios.get(`/api/users/${userId}`)
       .then(res => {this.setState({ user: res.data[0] })})
@@ -55,20 +58,27 @@ class Profile extends Component {
 
     axios.get(`/api/pets/${userId}`)
       .then(res => {
-        console.log(res.data)
         this.setState({ 
           pet: res.data, 
-          currentPetId: res.data[0]._id 
+          currentPetId: res.data[0]._id,
+          petUrl: this.state.pet[this.state.currentPetIndex].petUrl
       })
+      this.writeFiles()
     })
       .catch(err => console.log(err));
   };
 
+  writeFiles = () => {
+    axios.get(`/api/user/writefile/${this.state.currentUserId}`)
+      .then(res => axios.get(`/api/pets/writefile/${this.state.currentPetId}`))
+      .catch(err => console.log(err))
+  }
   getUserInfo = userId => {
     axios.get(`/api/users/${userId}`)
       .then(res => {
         this.setState({ user: res.data[0] });
         this.getPetInfo(this.state.currentUserId)
+        this.writeFile();
             })
       .catch(err => console.log(err));
   };
@@ -78,7 +88,7 @@ class Profile extends Component {
       .then(res => {
         this.setState({ 
           pet: res.data, 
-          currentPetId: res.data[0]._id 
+          currentPetId: res.data[0]._id,
       })
     })
       .then( res => {
@@ -93,6 +103,7 @@ class Profile extends Component {
 
   modalOpen = (open) => {
     this.setState({modalOpen: open})
+
   }
 
   handleLogout = e => {
@@ -100,7 +111,11 @@ class Profile extends Component {
   };
 
   handlePetChange = (petId) =>{
-    this.setState({currentPetId: petId}, () => this.getPetInfo(petId))
+    this.setState({currentPetId: petId}, () => {
+      this.getPetInfo(petId)
+      this.writeFiles()
+    })
+    
   }
 
   render() {
@@ -108,7 +123,9 @@ class Profile extends Component {
     return (
       <div>
         <NavBar />
-        <PetNav handlePetChange={this.handlePetChange}/>
+        <PetNav 
+        handlePetChange={this.handlePetChange}
+        />
         <div>
           <Container>
             {/* <DownloadPDF /> */}
@@ -124,24 +141,28 @@ class Profile extends Component {
                   vetPhone={this.state.user.vetPhone}
                   uid={this.state.currentUserId}
                   getUserInfo={this.getUserInfo}
+                  petId = {this.state.currentPetId}
                 />
                 <Medical
-                  medications={this.state.pet[this.state.currentPetIndex].petMedications}
-                  vaccines={this.state.pet[this.state.currentPetIndex].petInoculations}
-                  allergies={this.state.pet[this.state.currentPetIndex].petAllergies}
-                  food={this.state.pet[this.state.currentPetIndex].petFood}
-                  procedures={this.state.pet[this.state.currentPetIndex].petProcedures}
+                  petMedications={this.state.pet[this.state.currentPetIndex].petMedications}
+                  petInoculations={this.state.pet[this.state.currentPetIndex].petInoculations}
+                  petAllergies={this.state.pet[this.state.currentPetIndex].petAllergies}
+                  petFood={this.state.pet[this.state.currentPetIndex].petFood}
+                  petProcedures={this.state.pet[this.state.currentPetIndex].petProcedures}
                   petId = {this.state.currentPetId}
                   uid={this.state.currentUserId}
                   getUserInfo={this.getUserInfo}
+                  getPetInfo={this.getPetInfo}
+                  modalOpen={this.modalOpen}
                 />
               </Col>
               <Col sm={4}>
-                <PhotoUpload 
+                {/* <PhotoUpload 
                   uid={this.state.currentUserId}
                   petId = {this.state.currentPetId}
-                />
+                /> */}
                 <CalendarComponent />
+                <img src="https://www.mercypetclinic.org/wp-content/uploads/2018/12/MPC_sliderupdates_mainslider.png" alt="pets" id="pets"/>
               </Col>
               <Col sm={4}>
                 <PetInfo
@@ -154,12 +175,13 @@ class Profile extends Component {
                   petWeight={this.state.pet[this.state.currentPetIndex].petWeight}
                   petRabiesTag={this.state.pet[this.state.currentPetIndex].petRabiesTag}
                   petMicroChip={this.state.pet[this.state.currentPetIndex].petMicroChip}
+                  petUrl={this.state.pet[this.state.currentPetIndex].petUrl}
                   currentPetId = {this.state.currentPetId}
                   uid={this.state.currentUserId}
                   getPetInfo={this.getPetInfo}
                   modalOpen={this.modalOpen}
                 />
-                <img src="https://www.mercypetclinic.org/wp-content/uploads/2018/12/MPC_sliderupdates_mainslider.png" alt="pets" id="pets"/>
+                
               </Col>
             </Row>
           </Container>

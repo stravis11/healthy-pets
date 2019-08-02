@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import PetModal from "../../Modals/PetModal";
-import Axios from "axios";
+import axios from "axios";
+import PhotoUpload from "../../PhotoUpload";
+
 
 class PetInfo extends Component {
 
@@ -32,6 +34,7 @@ class PetInfo extends Component {
       petWeight: this.props.petWeight,
       petRabiesTag: this.props.petRabiesTag,
       petMicroChip: this.props.petMicroChip,
+      petUrl: this.props.petUrl
     }
     this.setState({pet: petObj, currentUserId: this.props.uid, currentPetId: this.props.currentPetId})
     
@@ -39,15 +42,24 @@ class PetInfo extends Component {
 
   updatedModal = (currentPetId) => {
     this.props.getPetInfo(currentPetId);
+    this.writeFiles();
   };
 
   modalOpen = (open) => {
     this.setState({modalOpen: open})
     this.props.modalOpen(open);
   }
+
+  writeFiles = () => {
+    axios.get(`/api/user/writefile/${this.props.uid}`)
+      .then(res => axios.get(`/api/pets/writefile/${this.props.currentPetId}`))
+      .catch(err => console.log(err))
+  }
+
   render() {
     return (
       <div className="card" id="pet-card">
+        
         <div className="card-body text-center">
           <h3 className="card-title">
             <strong>Pet Profile</strong>
@@ -98,6 +110,11 @@ class PetInfo extends Component {
             <strong>Microchip#: </strong> {this.props.petMicroChip}
           </li>
         </ul>
+        <PhotoUpload
+        uid={this.state.currentUserId}
+        petId = {this.state.currentPetId}
+        />
+        <img src={this.props.petUrl} alt="yourPet"/>
       </div>
     );
   }
