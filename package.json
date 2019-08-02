@@ -47,7 +47,7 @@
     "url": "git+https://github.com/kschroeder20/healthy-pets.git"
   },
   "engines": {
-    "node": "10.5.2"
+    "node": "latest"
   },
   "keywords": [],
   "author": "",
