@@ -21,6 +21,6 @@
                 Allergies: Everything
                 Procedures: None
 
-                Rabies Tage: 0
-                Microchip: undefined
+                Rabies Tage: 222
+                Microchip: 222
                 
