@@ -1,20 +1,15 @@
 
-              Owner Name: Becca
+              Owner Name: Kevin Schroeder
               Home Phone: 000-000-0000
               Mobile Phone: 000-000-0000
-              Email: becca@gamil.com
+              Email: schroederkevin94@gmail.com
               Address: 111 North St.
-              
-<<<<<<< HEAD
               Vet Name: 
               Vet Phone: 
-=======
               Vet Name: Dr. Smith
               Vet Phone: 111-111-1111
->>>>>>> 1fa0ecc58a6594ad1366c71e2b33a724ed3e2551
-              
-                Pet Name: Sammy
-                Pet Birthday: 2015-01-20
+                Pet Name: Fito
+                Pet Birthday: 
                 Pet Color: Golden
                 Pet Species: Dog
                 Pet Breed: Golden Retriever
@@ -26,6 +21,6 @@
                 Allergies: Everything
                 Procedures: None
 
-                Rabies Tage: 12345
-                Microchip: 7896515
+                Rabies Tage: 111
+                Microchip: 111
                 
