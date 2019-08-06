@@ -1,18 +1,23 @@
 
-              Owner Name: Kevin Schroeder
+              Owner Name: Becca
               Home Phone: 000-000-0000
               Mobile Phone: 000-000-0000
-              Email: schroederkevin94@gmail.com
+              Email: becca@gamil.com
               Address: 111 North St.
               
+<<<<<<< HEAD
               Vet Name: 
               Vet Phone: 
+=======
+              Vet Name: Dr. Smith
+              Vet Phone: 111-111-1111
+>>>>>>> 1fa0ecc58a6594ad1366c71e2b33a724ed3e2551
               
-                Pet Name: Buster
-                Pet Birthday: 
-                Pet Color: Brown
+                Pet Name: Sammy
+                Pet Birthday: 2015-01-20
+                Pet Color: Golden
                 Pet Species: Dog
-                Pet Breed: Austrailian Shepard
+                Pet Breed: Golden Retriever
                 Pet Sex: Male
                 Pet Weight: 80
 
@@ -21,6 +26,6 @@
                 Allergies: Everything
                 Procedures: None
 
-                Rabies Tage: 222
-                Microchip: 222
+                Rabies Tage: 12345
+                Microchip: 7896515
                 
