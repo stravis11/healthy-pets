@@ -1,20 +1,19 @@
-import React, { Component } from 'react';
-import Modal from 'react-modal';
-import API from "../../../utils/API";
-import axios from 'axios';
+import React, { Component } from "react";
+import Modal from "react-modal";
+import axios from "axios";
+import { Button } from "react-bootstrap";
 import { FaPlusSquare } from "react-icons/fa";
-
 
 const customStyles = {
   content: {
-    top: '50%',
-    left: '50%',
-    right: 'auto',
-    bottom: 'auto',
-    marginRight: '-50%',
-    transform: 'translate(-50%, -50%)',
-    width: '40rem',
-    height: '40rem'
+    top: "50%",
+    left: "50%",
+    right: "auto",
+    bottom: "auto",
+    marginRight: "-50%",
+    transform: "translate(-50%, -50%)",
+    width: "40rem",
+    height: "40rem"
   },
   overlay: {
     position: "fixed",
@@ -26,8 +25,7 @@ const customStyles = {
   }
 };
 
-// Make sure to bind modal to your appElement (http://reactcommunity.org/react-modal/accessibility/)
-Modal.setAppElement(document.getElementById('root'));
+Modal.setAppElement(document.getElementById("root"));
 
 class PetModal extends Component {
   constructor() {
@@ -37,18 +35,19 @@ class PetModal extends Component {
     this.afterOpenModal = this.afterOpenModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.state = {
-        petName: "",
-        petBirthday: '',
-        petColor: "",
-        petBreed: "",
-        petSex: "",
-        petSpecies: '',
-        petWeight: 0,
-        petRabiesTag: 0,
-        petMicroChip: 0,
-        uid: '',
-        currentPetId: 0,
-        userId: 0,
+      petName: "",
+      petBirthday: "",
+      petColor: "",
+      petBreed: "",
+      petSex: "",
+      petSpecies: "",
+      petWeight: 0,
+      petRabiesTag: 0,
+      petMicroChip: 0,
+      uid: "",
+      currentPetId: 0,
+      userId: 0,
+      petUrl: "https://dummyimage.com/200x200/696669/ffffff&text=Add+a+Photo"
     };
   }
 
@@ -56,18 +55,16 @@ class PetModal extends Component {
     const url = window.location.pathname;
     const pathnameArr = url.split("/");
     const userId = pathnameArr[pathnameArr.length - 1];
-    this.setState({userId: userId});
+    this.setState({ userId: userId });
   };
-
 
   handleSubmit(event) {
     event.preventDefault();
     this.updateDb(this.state.userId);
     this.closeModal();
-    // this.props.modalOpen(false);
   }
 
-  updateDb = (uid) => {
+  updateDb = uid => {
     let petObj = {
       petName: this.state.petName,
       petBirthday: this.state.petBirthday,
@@ -78,17 +75,19 @@ class PetModal extends Component {
       petWeight: this.state.petWeight,
       petRabiesTag: this.state.petRabiesTag,
       petMicroChip: this.state.petMicroChip,
-      uid: uid
-    }
+      uid: uid,
+      petUrl: this.state.petUrl
+    };
 
-    axios.post(`/api/pets`, petObj)
-    .then(res => {
-      console.log(res);
-      this.props.getPetInfo(uid)
-      console.log("pet updated")
-    })
-    .catch(err => console.log(err));
-  }
+    axios
+      .post(`/api/pets`, petObj)
+      .then(res => {
+        console.log(res);
+        this.props.getPetInfo(uid);
+        console.log("pet updated");
+      })
+      .catch(err => console.log(err));
+  };
 
   openModal() {
     this.setState({ modalIsOpen: true });
@@ -112,10 +111,10 @@ class PetModal extends Component {
   render() {
     return (
       <div>
-        {/* <button className="edit" onClick={this.openModal}>
-          Edit
-        </button> */}
-        <FaPlusSquare onClick={this.openModal}/>
+        <Button variant="secondary" className="addPet">
+          Add A Pet
+          <FaPlusSquare onClick={this.openModal} />
+        </Button>
         <Modal
           isOpen={this.state.modalIsOpen}
           onAfterOpen={this.afterOpenModal}
@@ -132,92 +131,84 @@ class PetModal extends Component {
           <form onSubmit={this.handleSubmit}>
             <div className="form-group">
               <input
+                contentLabel="Name"
                 type="text"
                 className="form-control"
-                value={this.state.petName}
                 id="petName"
                 onChange={this.handleChange}
-                placeholder={this.props.petName}
+                placeholder="Name"
               />
             </div>
             <div className="form-group">
               <input
                 type="date"
                 className="form-control"
-                value={this.state.petBirthday}
                 id="petBirthday"
                 onChange={this.handleChange}
-                placeholder="00/00/0000"
+                placeholder="Birthday"
               />
             </div>
             <div className="form-group">
               <input
                 type="text"
                 className="form-control"
-                value={this.state.petSpecies}
                 id="petSpecies"
                 onChange={this.handleChange}
-                placeholder={this.props.petSpecies}
+                placeholder="Species"
               />
             </div>
             <div className="form-group">
               <input
                 type="text"
                 className="form-control"
-                value={this.state.petColor}
                 id="petColor"
                 onChange={this.handleChange}
-                placeholder={this.props.petColor}
+                placeholder="Color"
               />
             </div>
             <div className="form-group">
               <input
                 type="text"
                 className="form-control"
-                value={this.state.petBreed}
                 id="petBreed"
                 onChange={this.handleChange}
-                placeholder={this.props.petBreed}
+                placeholder="Breed"
               />
             </div>
             <div className="form-group">
               <input
                 type="text"
                 className="form-control"
-                value={this.state.petSex}
                 id="petSex"
                 onChange={this.handleChange}
-                placeholder={this.props.petSex}
+                placeholder="Sex"
               />
             </div>
             <div className="form-group">
               <input
                 type="number"
                 className="form-control"
-                value={this.state.petWeight}
                 id="petWeight"
                 onChange={this.handleChange}
-                placeholder={this.props.petWeight}
+                placeholder="Weight"
               />
             </div>
             <div className="form-group">
               <input
                 type="number"
                 className="form-control"
-                value={this.state.petRabiesTag}
                 id="petRabiesTag"
                 onChange={this.handleChange}
-                placeholder={this.props.petRabiesTag}
+                placeholder="Rabies Tag"
               />
             </div>
             <div className="form-group">
               <input
                 type="number"
                 className="form-control"
-                value={this.state.petMicroChip}
                 id="petMicroChip"
                 onChange={this.handleChange}
-                placeholder={this.props.petMicroChip}
+                placeholder="Microchip Number"
               />
             </div>
             <input

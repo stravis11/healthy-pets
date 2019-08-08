@@ -11,15 +11,15 @@ const petSchema = new Schema({
   petBreed: String,
   petSpecies: String,
   petSex: String,
-  petWeight: Number,
-  petRabiesTag: Number,
-  petMicroChip: Number,
+  petWeight: String,
+  petRabiesTag: String,
+  petMicroChip: String,
   petMedications: String,
   petInoculations: String,
   petAllergies: String,
   petFood: String,
   petProcedures: String,
-  petUrl: String,
+  petUrl: String
 });
 
 const Pet = mongoose.model("Pet", petSchema);

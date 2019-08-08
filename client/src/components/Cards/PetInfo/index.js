@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import PetModal from "../../Modals/PetModal";
-import Axios from "axios";
+import axios from "axios";
+import PhotoUpload from "../../PhotoUpload";
 
 class PetInfo extends Component {
-
   state = {
     pet: {
       petName: "",
@@ -15,12 +15,12 @@ class PetInfo extends Component {
       petWeight: 0,
       petRabiesTag: "",
       petMicroChip: "",
+      petUrl: ""
     },
     currentPetId: 0,
     currentUserId: 0,
     modalOpen: false
-    
-  }
+  };
   componentDidMount = () => {
     let petObj = {
       petName: this.props.PetName,
@@ -32,19 +32,33 @@ class PetInfo extends Component {
       petWeight: this.props.petWeight,
       petRabiesTag: this.props.petRabiesTag,
       petMicroChip: this.props.petMicroChip,
-    }
-    this.setState({pet: petObj, currentUserId: this.props.uid, currentPetId: this.props.currentPetId})
-    
+      petUrl: this.props.petUrl
+    };
+    this.setState({
+      pet: petObj,
+      currentUserId: this.props.uid,
+      currentPetId: this.props.currentPetId,
+      petUrl: this.props.petUrl
+    });
   };
 
-  updatedModal = (currentPetId) => {
+  updatedModal = currentPetId => {
     this.props.getPetInfo(currentPetId);
+    this.writeFiles();
   };
 
-  modalOpen = (open) => {
-    this.setState({modalOpen: open})
+  modalOpen = open => {
+    this.setState({ modalOpen: open });
     this.props.modalOpen(open);
-  }
+  };
+
+  writeFiles = () => {
+    axios
+      .get(`/api/user/writefile/${this.props.uid}`)
+      .then(res => axios.get(`/api/pets/writefile/${this.props.currentPetId}`))
+      .catch(err => console.log(err));
+  };
+
   render() {
     return (
       <div className="card" id="pet-card">
@@ -52,21 +66,21 @@ class PetInfo extends Component {
           <h3 className="card-title">
             <strong>Pet Profile</strong>
           </h3>
-          <PetModal 
-          modalUpdate={this.updatedModal} 
-          petName={this.props.petName} 
-          petBirthday={this.props.petBirthday}
-          petSpecies={this.props.petSpecies}
-          petColor={this.props.petColor}
-          petBreed={this.props.petBreed}
-          petSex={this.props.petSex}
-          petWeight={this.props.petWeight}
-          petRabiesTag={this.props.petRabiesTag}
-          petMicroChip={this.props.petMicroChip}
-          currentPetId = {this.props.currentPetId}
-          uid={this.props.currentUserId}
-          getUserInfo={this.getUserInfo}
-          modalOpen={this.modalOpen}
+          <PetModal
+            modalUpdate={this.updatedModal}
+            petName={this.props.petName}
+            petBirthday={this.props.petBirthday}
+            petSpecies={this.props.petSpecies}
+            petColor={this.props.petColor}
+            petBreed={this.props.petBreed}
+            petSex={this.props.petSex}
+            petWeight={this.props.petWeight}
+            petRabiesTag={this.props.petRabiesTag}
+            petMicroChip={this.props.petMicroChip}
+            currentPetId={this.props.currentPetId}
+            uid={this.props.currentUserId}
+            getUserInfo={this.getUserInfo}
+            modalOpen={this.modalOpen}
           />
         </div>
         <ul className="list-group list-group-flush">
@@ -98,6 +112,18 @@ class PetInfo extends Component {
             <strong>Microchip#: </strong> {this.props.petMicroChip}
           </li>
         </ul>
+        <PhotoUpload
+          uid={this.props.currentUserId}
+          petId={this.props.currentPetId}
+          petUrl={this.props.petUrl}
+          updatedModal={this.updatedModal}
+          modalOpen={this.modalOpen}
+        />
+        <img
+          src={this.props.petUrl}
+          style={{ width: "350px", height: "350px", margin: "20px" }}
+          alt="your pet"
+        />
       </div>
     );
   }
