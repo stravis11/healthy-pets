@@ -1,3 +1,4 @@
+
 import React from "react";
 import "./style.css";
 
@@ -21,3 +22,4 @@ const Title = function() {
 };
 
 export default Title;
+
